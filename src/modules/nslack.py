@@ -4,24 +4,24 @@ import getopt
 import json
 
 # arbir json de la tempetatura
-f = open('.local/config/hackrf-sensors.json',) 
+f = open('.local/config/hackrf-sensors.json',) #ojo, revisar ruta
 
-# obtencion del valor del json
+# obtencion de los valores del json
 data = json.load(f) 
 
 # Crear mensaje via api Slack #
 
 # funcion hacer condicion de la temeptertaura
 def main(argv):
-    cpu=80 # a reemplazar por valor real de la cpu via json 
-    temp = data['temp_max']
+    cpu = data['temp_cpu'] #temperatura de la cpu (viene del json)
+    temp = data['lim_cpu'] #umbral o limite de la cpu (viene del json)
     if cpu > temp:
         send(argv,cpu)
 
 #funcion para el envio del mensaje cuando la temperatura es alta
 def send_slack_message(message):
     payload = '{"text":"%s"}' % message
-    response = requests.post('https://hooks.slack.com/services/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', data=payload)
+    response = requests.post('https://hooks.slack.com/services/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', data=payload) #token para un bot de temperatura
     print(response.text)
 
 #funcion para la creacion del mensaje 

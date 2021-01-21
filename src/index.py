@@ -25,6 +25,7 @@ def main():
     signal.signal(signal.SIGINT,  signal_handle)
     signal.signal(signal.SIGTERM, signal_handle)
 
+    # argumentos del mqtt
     parser = argparse.ArgumentParser()
     parser.add_argument("name")
     parser.add_argument("--verbose", action="store_true")
@@ -35,8 +36,7 @@ def main():
     parser.add_argument("--mqtt-topic-req")
     parser.add_argument("--mqtt-topic-res")
 
-    # agumentos para la api de slack #
- 
+    # agumentos para la api de slack
     parser.add_argument('https://hooks.slack.com/services/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') # Token del bot
 
     args = parser.parse_args()
