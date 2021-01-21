@@ -37,7 +37,8 @@ def main():
     parser.add_argument("--mqtt-topic-res")
 
     # agumentos para la api de slack
-    parser.add_argument('https://hooks.slack.com/services/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') # Token del bot
+    parser.add_argument("--slack-webhook") # lo que conecta al "bot" con el servidor slack
+    print(args.slack_webhook) #para revisar el argumento que tiene el webhook, borrar luego de ver si esta bien
 
     args = parser.parse_args()
 
