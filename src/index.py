@@ -3,6 +3,7 @@
 
 from modules import logger
 from modules import setLevel
+from modules import temperature
 
 from dotenv import load_dotenv
 
@@ -41,6 +42,16 @@ def main():
 
     log_level = os.getenv("LOG_LEVEL", "info").lower()
     setLevel(args.verbose or log_level == 'debug')
+
+    
+    while True:
+    
+        data = temperature.getHighTemperature()
+
+        with open ('testjson.json', 'w') as f:
+            json.dump(data,f)
+        
+        time.sleep(10)
 
 ##
 #
