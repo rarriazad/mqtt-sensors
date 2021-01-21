@@ -37,8 +37,7 @@ def main():
 
     # agumentos para la api de slack #
  
-    parser.add_argument("--mqtt-topic-req") # Definir canal de envio
-    parser.add_argument("--mqtt-topic-res") # Token del bot
+    parser.add_argument('https://hooks.slack.com/services/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') # Token del bot
 
     args = parser.parse_args()
 
