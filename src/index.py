@@ -98,28 +98,27 @@ def main():
 
                         if command == 'config':
 
+                            newTemp = payload['temp']
+
                             logger.debug("Config Temperature %s", {
                                 'id': payload['id'],                            
                                 'status':'Config max temperature',
                                 'data':{
-                                    'temp':payload['temp']
+                                    'new_temp_max':newTemp
                             }})
 
-                           
-                            emit(topic_res, {
-                                'id': payload['id'],                            
-                                'status':'Config max temperature',
-                                'data':{
-                                    'temp':payload['temp']
-                                }
-                            })
-
                             try:
-                                newTemp = payload['temp']
                                 data = {"temp_max": newTemp}
 
                                 save_config(data)
-                                #updateTemperature('.local/config/hackrf-sensors.json', 0, '{"temp_max":' + newTemp + "}")
+
+                                emit(topic_res, {
+                                    'id': payload['id'],                            
+                                    'status':'Config max temperature',
+                                    'data':{
+                                        'new_temp_max':newTemp
+                                    }
+                                })
 
                             except Exception as ex:
                                 logger.warning("%s", payload)
@@ -130,16 +129,15 @@ def main():
                           
                         elif command == 'status':
                             
-                            #INTEGRAR PROCESO QUE OBTIENE T° DE LA MAQUINA
-                            # Y PASARLO COMO VARIABLE A EMIT(TOPIC_RES)
-
                             logger.debug("Getting sensors data")
-                     
+                                        
+                            actual_temp = temperature.getHighTemperature()
+
                             emit(topic_res, {
-                                'id': payload['id'],                            
+                                'id': hash(payload['id']),                            
                                 'status':'Data sensors found',
                                 'data':{
-                                    'temp':payload['temp']
+                                    'temp':actual_temp
                                 }
                             })
 
