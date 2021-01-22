@@ -21,7 +21,7 @@ def chat(text):
         res = client.chat_postMessage(
             username=SLACK_USERNAME,
             channel=SLACK_CHANNEL,
-            text= "Temperatura del umbral de la CPU excedida, " + "CPU a " + "xx" + " °C") # revisar ISO del sistema para que no haya problema 
+            text= Temperatura 
         )
 ​
         logger.debug(res)
