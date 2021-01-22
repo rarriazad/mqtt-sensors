@@ -77,8 +77,6 @@ def main():
     HOME = os.getenv("HOME")
 
     pattern = re.compile(r'^Modify: (.*)\n')
-   
-    slackwc.chat("hola")
 
     while True:
 
@@ -182,6 +180,9 @@ def main():
         #temp = data['temp_max']
         #if cpu > temp:
             #slackwc.chat()
+
+        text = 'hola'
+        slackwc.chat()
             
 ##
 #

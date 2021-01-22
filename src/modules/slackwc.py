@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from slack import WebClient
 from slack.errors import SlackApiError
-from .logger import logger
+from logger import *
 
 import os
 
@@ -13,13 +13,14 @@ SLACK_USERNAME = os.getenv("SLACK_USERNAME") #nombre del bot/app
 
 client = WebClient(token=SLACK_TOKEN)
 
-def chat(text):
+def chat():
+    
     try:
 
         res = client.chat_postMessage(
             username=SLACK_USERNAME,
             channel=SLACK_CHANNEL,
-            text= text #mensaje de prueba, luego cambiar para mostrar más info de la CPU
+            text= "text" #mensaje de prueba, luego cambiar para mostrar más info de la CPU
         )
 
         logger.debug(res)
