@@ -176,10 +176,5 @@ def main():
         
         time.sleep(300)
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 7ba0cb4f3e3adcecdfb9b6d7f9b55801d3943433
 if __name__ == '__main__':
     main()
