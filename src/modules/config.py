@@ -5,8 +5,8 @@ from .logger import logger
 import json
 import os
 
-homedir = os.path.join(os.getenv("HOME"), '.hackrf-control')
-filename = os.path.join(homedir, 'config.json')
+homedir = os.path.join(os.getenv("HOME", "./"), '.local/config')
+filename = os.path.join(homedir, 'hackrf-sensors.json')
 
 ##
 #
@@ -24,13 +24,9 @@ def read_config():
     else:
         logger.debug("creating %s", filename)
         data = {
-            "samplerate" : 1000000,
-            "gain"       : 15,
-            "frecuency"  : 490000000,
-            "carrier"    : 1000,
-            "waveform"   : "constant",
-            "_waveform"  : False
+            "temp_max" : 75,
         }
+
         with open(filename, "w") as fd:
             json.dump(data, fd)
 

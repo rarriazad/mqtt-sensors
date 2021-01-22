@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*
-​
 from dotenv import load_dotenv
 ​
 from slack import WebClient
@@ -9,9 +7,9 @@ from .logger import logger
 ​
 import os
 ​
-SLACK_TOKEN = 'xoxb-305786002212-395782522743-K8nXYZJ5TfJqSY7KOEuykVsc' # os.getenv("SLACK_TOKEN")
-SLACK_CHANNEL = '#practicas' #os.getenv("SLACK_CHANNEL") #canal donde sera "invocado"
-SLACK_USERNAME = "Bot_Temp(T.leo)" #nombre del bot/app
+SLACK_TOKEN = os.getenv("SLACK_TOKEN") #token del bot/app
+SLACK_CHANNEL = os.getenv("SLACK_CHANNEL") #canal donde sera "invocado"
+SLACK_USERNAME = os.getenv("SLACK_USERNAME") #nombre del bot/app 
 ​
 client = WebClient(token=SLACK_TOKEN)
 ​
@@ -21,7 +19,7 @@ def chat(text):
         res = client.chat_postMessage(
             username=SLACK_USERNAME,
             channel=SLACK_CHANNEL,
-            text= Temperatura 
+            text= Temperatura #mensaje de prueba, luego cambiar para mostrar más info de la CPU
         )
 ​
         logger.debug(res)
