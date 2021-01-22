@@ -6,7 +6,8 @@ from modules import setLevel
 from modules import subscribe
 from modules import read_config
 from modules import save_config
-from modules import temperature
+#from modules import temperature
+from modules import slackwc
 
 from dotenv import load_dotenv
 from datetime import datetime
@@ -77,6 +78,8 @@ def main():
 
     pattern = re.compile(r'^Modify: (.*)\n')
    
+    slackwc.chat("hola")
+
     while True:
 
         now = datetime.now()
@@ -162,14 +165,24 @@ def main():
                 nextConnectionAt = now + timedelta(seconds=10)
 
                 logger.debug("Reconnecting mqtt at 10 seconds")
-
         
-        
-        data = temperature.getHighTemperature()
-        logger.info("temperature: %s", data)
-        
+        #data = temperature.getHighTemperature()
+        #logger.info("temperature: %s", data)
         time.sleep(10)
 
+        #idea para la notificacion
+        
+        # arbir json de la tempetatura
+        #f = open('hackrf-sensors.json',) 
+
+        # obtencion de los valor del json
+        #data = json.load(f) 
+
+        #cpu = data['temp_cpu'] # a reemplazar por valor real de la cpu via json 
+        #temp = data['temp_max']
+        #if cpu > temp:
+            #slackwc.chat()
+            
 ##
 #
 
