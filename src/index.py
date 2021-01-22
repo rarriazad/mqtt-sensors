@@ -6,6 +6,7 @@ from modules import setLevel
 from modules import subscribe
 from modules import read_config
 from modules import save_config
+from modules import temperature
 
 from dotenv import load_dotenv
 from datetime import datetime
@@ -162,7 +163,13 @@ def main():
 
                 logger.debug("Reconnecting mqtt at 10 seconds")
 
-        time.sleep(0.1)
+        
+        
+        data = temperature.getHighTemperature()
+        logger.info("temperature: %s", data)
+        
+        time.sleep(10)
+
 ##
 #
 
