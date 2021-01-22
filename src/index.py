@@ -7,6 +7,7 @@ from modules import subscribe
 from modules import read_config
 from modules import save_config
 from modules import temperature
+from modules import slackwc
 
 from dotenv import load_dotenv
 from datetime import datetime
@@ -165,9 +166,16 @@ def main():
            
         data = temperature.getHighTemperature()
         logger.info("temperature: %s", data)
+
+        
+
+        f = open('.local/config/hackrf-sensors.json', "r")
+        umbral = json.load(f)
+        if data > umbral['temp_max']:
+            slackwc.chat(data)
+        
         time.sleep(300)
-##
-#
+
 
 
 if __name__ == '__main__':
