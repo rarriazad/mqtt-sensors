@@ -169,6 +169,5 @@ def main():
 ##
 #
 
-temperature.getHighTemperature()
 if __name__ == '__main__':
     main()
