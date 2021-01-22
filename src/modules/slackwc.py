@@ -22,7 +22,7 @@ def chat():
         res = client.chat_postMessage(
             username=SLACK_USERNAME,
             channel=SLACK_CHANNEL,
-            text= "text" #mensaje de prueba, luego cambiar para mostrar más info de la CPU
+            text= "Cuidado la CPU a superado el umbral de seguridad, la tempetura actual es de: " #+ "tem_cpu" + " °C" #mensaje de prueba, luego cambiar para mostrar más info de la CPU
         )
 
         logger.debug(res)
