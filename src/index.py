@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*
 
 from modules import logger
@@ -78,7 +78,7 @@ def main():
     pattern = re.compile(r'^Modify: (.*)\n')
    
     while True:
-
+        
         now = datetime.now()
 
         if not connected and now > nextConnectionAt:
@@ -162,16 +162,13 @@ def main():
                 nextConnectionAt = now + timedelta(seconds=10)
 
                 logger.debug("Reconnecting mqtt at 10 seconds")
-
-        
-        
+           
         data = temperature.getHighTemperature()
         logger.info("temperature: %s", data)
-        
-        time.sleep(10)
-
+        time.sleep(300)
 ##
 #
 
+temperature.getHighTemperature()
 if __name__ == '__main__':
     main()
