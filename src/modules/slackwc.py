@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*
+
 from dotenv import load_dotenv
 from slack import WebClient
 from slack.errors import SlackApiError
