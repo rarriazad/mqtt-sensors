@@ -171,7 +171,8 @@ def main():
 
         f = open('.local/config/hackrf-sensors.json', "r")
         umbral = json.load(f)
-        if data > umbral['temp_max']:
+        #if data > umbral['temp_max']:
+        if data > 50: #Condicion Temporal de Testeo de notificacion
             slackwc.chat(data)
         
         time.sleep(300)
