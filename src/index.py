@@ -68,17 +68,12 @@ def main():
     topic_req = f"{mqtt_topic_req}/{name}"
     topic_res = f"{mqtt_topic_res}/{name}"
     
-    read_config()
+    config = read_config()
 
     logger.debug("Starting MQTT")
 
     nextConnectionAt = datetime.now()
     connected = False
-
-    #HOME = os.getenv("HOME")
-    #pattern = re.compile(r'^Modify: (.*)\n')
-
-    slackwc.chat("temperatura")
    
     while True:
 
@@ -171,9 +166,9 @@ def main():
 
         config = read_config()
 
-        if actual_temp > data['temp_max']:
-            logger.info("temperture: %d", actual_temp)
-        #    slackwc.chat(data)
+        if actual_temp > config['temp_max']:
+            logger.warning("temperature: %d", actual_temp)
+            slackwc.chat(f"Temperature in {name}: {actual_temp}°C (MAX: {config['temp_max']}°C)")
         
         time.sleep(300)
 

@@ -3,7 +3,7 @@
 from dotenv import load_dotenv
 from slack import WebClient
 from slack.errors import SlackApiError
-from logger import *
+from .logger import logger
 
 import os
 
@@ -15,14 +15,14 @@ SLACK_USERNAME = os.getenv("SLACK_USERNAME") #nombre del bot/app
 
 client = WebClient(token=SLACK_TOKEN)
 
-def chat():
+def chat(text):
     
     try:
 
         res = client.chat_postMessage(
             username=SLACK_USERNAME,
             channel=SLACK_CHANNEL,
-            text= "Cuidado la CPU a superado el umbral de seguridad, la tempetura actual es de: " #+ "tem_cpu" + " °C" #mensaje de prueba, luego cambiar para mostrar más info de la CPU
+            text=text
         )
 
         logger.debug(res)
