@@ -7,6 +7,7 @@ from modules import subscribe
 from modules import read_config
 from modules import save_config
 from modules import temperature
+from modules import slackwc
 
 from dotenv import load_dotenv
 from datetime import datetime
@@ -35,7 +36,6 @@ def signal_handle(signum, frame):
 
 def main():
  
-    read_config()
     signal.signal(signal.SIGINT,  signal_handle)
     signal.signal(signal.SIGTERM, signal_handle)
 
@@ -68,14 +68,15 @@ def main():
     topic_req = f"{mqtt_topic_req}/{name}"
     topic_res = f"{mqtt_topic_res}/{name}"
     
+    read_config()
+
     logger.debug("Starting MQTT")
 
     nextConnectionAt = datetime.now()
     connected = False
 
-    HOME = os.getenv("HOME")
-
-    pattern = re.compile(r'^Modify: (.*)\n')
+    #HOME = os.getenv("HOME")
+    #pattern = re.compile(r'^Modify: (.*)\n')
    
     while True:
 
@@ -162,11 +163,17 @@ def main():
                 logger.debug("Reconnecting mqtt at 10 seconds")
 
         
+        # Revisión de la Temperatura
+
+        actual_temp = temperature.getHighTemperature()
+        logger.info("temperature: %s", actual_temp)
+
+        config = read_config()
+
+        if actual_temp > data['temp_max']:
+            slackwc.chat(data)
         
-        data = temperature.getHighTemperature()
-        logger.info("temperature: %s", data)
-        
-        time.sleep(10)
+        time.sleep(300)
 
 ##
 #
