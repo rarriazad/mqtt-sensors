@@ -30,7 +30,7 @@ def getHighTemperature():
 
     return int(temp_cpu)
     
-#guardar termperatura en json
+
 def Saving_JSON():
 
     while True:

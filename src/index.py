@@ -6,7 +6,7 @@ from modules import setLevel
 from modules import subscribe
 from modules import read_config
 from modules import save_config
-#from modules import temperature
+from modules import temperature
 from modules import slackwc
 
 from dotenv import load_dotenv
@@ -36,7 +36,6 @@ def signal_handle(signum, frame):
 
 def main():
  
-    read_config()
     signal.signal(signal.SIGINT,  signal_handle)
     signal.signal(signal.SIGTERM, signal_handle)
 
@@ -69,15 +68,18 @@ def main():
     topic_req = f"{mqtt_topic_req}/{name}"
     topic_res = f"{mqtt_topic_res}/{name}"
     
+    read_config()
+
     logger.debug("Starting MQTT")
 
     nextConnectionAt = datetime.now()
     connected = False
 
-    HOME = os.getenv("HOME")
+    #HOME = os.getenv("HOME")
+    #pattern = re.compile(r'^Modify: (.*)\n')
 
-    pattern = re.compile(r'^Modify: (.*)\n')
-
+    slackwc.chat("temperatura")
+   
     while True:
 
         now = datetime.now()
@@ -99,28 +101,27 @@ def main():
 
                         if command == 'config':
 
+                            newTemp = payload['temp']
+
                             logger.debug("Config Temperature %s", {
                                 'id': payload['id'],                            
                                 'status':'Config max temperature',
                                 'data':{
-                                    'temp':payload['temp']
+                                    'new_temp_max':newTemp
                             }})
 
-                           
-                            emit(topic_res, {
-                                'id': payload['id'],                            
-                                'status':'Config max temperature',
-                                'data':{
-                                    'temp':payload['temp']
-                                }
-                            })
-
                             try:
-                                newTemp = payload['temp']
                                 data = {"temp_max": newTemp}
 
                                 save_config(data)
-                                #updateTemperature('.local/config/hackrf-sensors.json', 0, '{"temp_max":' + newTemp + "}")
+
+                                emit(topic_res, {
+                                    'id': payload['id'],                            
+                                    'status':'Config max temperature',
+                                    'data':{
+                                        'new_temp_max':newTemp
+                                    }
+                                })
 
                             except Exception as ex:
                                 logger.warning("%s", payload)
@@ -131,16 +132,15 @@ def main():
                           
                         elif command == 'status':
                             
-                            #INTEGRAR PROCESO QUE OBTIENE T° DE LA MAQUINA
-                            # Y PASARLO COMO VARIABLE A EMIT(TOPIC_RES)
-
                             logger.debug("Getting sensors data")
-                     
+                                        
+                            actual_temp = temperature.getHighTemperature()
+
                             emit(topic_res, {
-                                'id': payload['id'],                            
+                                'id': hash(payload['id']),                            
                                 'status':'Data sensors found',
                                 'data':{
-                                    'temp':payload['temp']
+                                    'temp':actual_temp
                                 }
                             })
 
@@ -163,27 +163,20 @@ def main():
                 nextConnectionAt = now + timedelta(seconds=10)
 
                 logger.debug("Reconnecting mqtt at 10 seconds")
+
+        # Revisión de la Temperatura
+
+        actual_temp = temperature.getHighTemperature()
+        logger.info("temperature: %s", actual_temp)
+
+        config = read_config()
+
+        if actual_temp > data['temp_max']:
+            logger.info("temperture: %d", actual_temp)
+        #    slackwc.chat(data)
         
-        #data = temperature.getHighTemperature()
-        #logger.info("temperature: %s", data)
-        time.sleep(10)
+        time.sleep(300)
 
-        #idea para la notificacion
-        
-        # arbir json de la tempetatura
-        #f = open('hackrf-sensors.json',) 
-
-        # obtencion de los valor del json
-        #data = json.load(f) 
-
-        #cpu = data['temp_cpu'] # a reemplazar por valor real de la cpu via json 
-        #temp = data['temp_max']
-        #if cpu > temp:
-            #slackwc.chat()
-
-        text = 'hola'
-        slackwc.chat()
-            
 ##
 #
 
